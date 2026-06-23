@@ -74,7 +74,7 @@ class MLPClassifier(nn.Module):
         """
         super().__init__()
         input_dim = 3 * h * w
-        hidden_dim = 512
+        hidden_dim = 128
         
         self.net = nn.Sequential(
           nn.Linear(input_dim, hidden_dim),
@@ -115,7 +115,7 @@ class MLPClassifierDeep(nn.Module):
         """
         super().__init__()
         input_dim = 3 * h * w
-        hidden_dim = 512
+        hidden_dim = 128
         num_layers = 4
 
         layers = []
@@ -123,14 +123,12 @@ class MLPClassifierDeep(nn.Module):
         layers.append(nn.ReLU())
 
         for _ in range(num_layers - 1):
-          layers.append(nn.Linear(hidden_dim, num_classes))
+          layers.append(nn.Linear(hidden_dim, hidden_dim))
           layers.append(nn.ReLU())
 
         layers.append(nn.Linear(hidden_dim, num_classes))
 
         self.net = nn.Sequential(*layers)
-
-        raise NotImplementedError("MLPClassifierDeep.__init__() is not implemented")
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
@@ -150,7 +148,7 @@ class ResidualBlock(nn.Module):
       self.fc2 = nn.Linear(dim, dim)
       self.relu = nn.ReLU()
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
       out = self.relu(self.fc1(x))
       out = self.fc2(out)
       return self.relu(x + out)        
@@ -174,8 +172,8 @@ class MLPClassifierDeepResidual(nn.Module):
         """
         super().__init__()
         input_dim = 3 * h * w
-        hidden_dim = 512
-        num_blocks = 4
+        hidden_dim = 128
+        num_blocks = 3
 
         self.input_layer = nn.Linear(input_dim, hidden_dim)
         self.blocks = nn.Sequential(*[ResidualBlock(hidden_dim) for _ in range(num_blocks)])
