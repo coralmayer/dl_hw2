@@ -177,7 +177,8 @@ class MLPClassifierDeepResidual(nn.Module):
 
         self.input_layer = nn.Linear(input_dim, hidden_dim)
         self.blocks = nn.Sequential(*[ResidualBlock(hidden_dim) for _ in range(num_blocks)])
-        
+        self.output_layer = nn.Linear(hidden_dim, num_classes)
+
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
         Args:
