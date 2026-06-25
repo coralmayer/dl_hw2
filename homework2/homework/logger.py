@@ -5,6 +5,7 @@ import torch
 import torch.utils.tensorboard as tb
 
 
+
 def test_logging(logger: tb.SummaryWriter):
     """
     Your code here - finish logging the dummy loss and accuracy
