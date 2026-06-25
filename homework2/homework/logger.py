@@ -39,7 +39,7 @@ def test_logging(logger: tb.SummaryWriter):
 
         # log average train_accuracy
         avg_train_acc = torch.tensor(metrics["train_acc"]).mean().item()
-        logger.add_scalar("train_accuracy", avg_train_acc, epoch)
+        logger.add_scalar("train_accuracy", avg_train_acc, global_step)
 
         # example validation loop
         torch.manual_seed(epoch)
